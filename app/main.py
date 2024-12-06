@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from urllib.request import URLopener
 import os
-from services.pdf_reader import extract_text_with_pymupdf
+from services.pdf_reader import extract_text_with_pymupdf, extract_text_with_pdfplumber
 from services.llm_handler import extract_invoice_data_with_items
 
 app = FastAPI()
@@ -14,7 +14,7 @@ async def extract_invoice(file: UploadFile = File(...)):
         f.write(file.file.read())
 
     # Extraer texto del PDF
-    invoice_text = extract_text_with_pymupdf(temp_file)
+    invoice_text = extract_text_with_pdfplumber(temp_file)
 
     # Usar el modelo LLM para estructurar los datos
     try:
